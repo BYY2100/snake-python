@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-##!/usr/bin/python -i 
+
 import pygame as pg
 import time     ## to control speed
 import random
 import sys
 
 score = 0
+
 def get_score():
 	'''
 	Retrieve Score function
@@ -15,31 +16,56 @@ def get_score():
 
 	window.blit(score_display, score_display.get_rect())
 
+def play_again():
+	for event in pg.event.get():
+		if event.type == pg.KEYDOWN:
+			if event.key == pg.K_ESCAPE:
+				pg.quit()
+				sys.exit()
+			else:
+				fruit_cords = [random.randrange(1, 600//10) *10, 
+					random.randrange(1, 600//10) *10]
+				fruit_spawn = True
+
+				snake_pos = [300,300]
+				snake_body = [[200,200]]
+
+				start_game = True
+
+
 def game_over():
 	'''
 	Display game over and what to do after that
 	'''
+	start_game = False
 	font = pg.font.SysFont('sans serif', 40)
 
 	score_display = font.render(f'Game Over! You Scored {score}!', True, red)
-	prgramming_credits = font.render('This Game Was Prgrammed by BYY2100!', True, green)
+	prgramming_credits = font.render('This Game Was Programmed by BYY2100!', True, green)
+	# again = font.render('Press any Key to play again', True, (255,255,255))
+	# esc = font.render('Press Escape button to close', True, (255,255,255))
 
 	score_rect = score_display.get_rect()
 	prog_rect = prgramming_credits.get_rect()
+	# again_rect = again.get_rect()
+	# esc_rect = esc.get_rect()
 
 	score_rect.midtop = (300,200)
 	prog_rect.midtop = (300, 250)
+	# again_rect.midtop = (300, 300)
+	# esc_rect.midtop = (300,100)
 
+	# window.blit(esc, esc_rect)
 	window.blit(score_display, score_rect)
 	window.blit(prgramming_credits, prog_rect)
-
+	# window.blit(again, again_rect)
 
 	pg.display.flip()
 
-	# Wait 10s before quitting the program
-	time.sleep(5)
+	time.sleep(3)
 	pg.quit()
-	sys.exit(0)
+	exit()
+
 
 
 base_speed = 15
@@ -70,6 +96,9 @@ fruit_cords = [random.randrange(1, 600//10) *10,
 fruit_spawn = True
 
 start_game = True
+
+
+
 ## Starting the game
 
 while start_game:
@@ -85,7 +114,6 @@ while start_game:
 				change_dir = 'RIGHT'
 
 	## Enhance Movement
-
 	if change_dir == 'UP' and direction != 'DOWN':
 		direction = 'UP'
 	elif change_dir == 'DOWN' and direction != 'UP':
@@ -140,4 +168,3 @@ while start_game:
 	get_score()
 	pg.display.update()
 	fps.tick(base_speed)
-
